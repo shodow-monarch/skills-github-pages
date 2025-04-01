@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Sharing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+        }
+        main {
+            padding: 20px;
+        }
+        .photo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .photo {
+            margin: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .photo img {
+            max-width: 300px;
+            border-radius: 5px;
+        }
+        .like-btn {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Photo Sharing</h1>
+        <input type="file" id="upload" accept="image/*">
+        <button onclick="uploadPhoto()">Upload</button>
+    </header>
+    <main>
+        <div class="photo-container" id="photoContainer">
+            <!-- Photos will be added here dynamically -->
+        </div>
+    </main>
+    <script>
+        function uploadPhoto() {
+            const input = document.getElementById('upload');
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    addPhoto(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addPhoto(src) {
+            const container = document.getElementById('photoContainer');
+            const photoDiv = document.createElement('div');
+            photoDiv.classList.add('photo');
+            photoDiv.innerHTML = `
+                <img src="${src}" alt="Uploaded Photo">
+                <br>
+                <button class="like-btn" onclick="likePhoto(this)">Like (<span>0</span>)</button>
+            `;
+            container.appendChild(photoDiv);
+        }
+
+        function likePhoto(button) {
+            let likeCount = button.querySelector('span');
+            likeCount.textContent = parseInt(likeCount.textContent) + 1;
+        }
+    </script>
+</body>
+</html>
